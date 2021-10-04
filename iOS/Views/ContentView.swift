@@ -61,8 +61,15 @@ struct ContentView: View {
     }
 }
 
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
+struct ContentView_Previews: PreviewProvider {
+    
+    //
+    @StateObject private static var viewModel = WeatherViewModel()
+    
+    static var previews: some View {
+        ContentView(viewModel: viewModel,
+                    temperature: viewModel.history.last!.temperature,
+                    feel: viewModel.history.last!.feel,
+                    conditions: viewModel.history.last!.condition.description)
+    }
+}

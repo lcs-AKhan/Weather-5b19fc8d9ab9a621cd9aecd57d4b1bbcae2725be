@@ -32,8 +32,11 @@ struct HistoryView: View {
     }
 }
 
-//struct HistoryView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HistoryView()
-//    }
-//}
+struct HistoryView_Previews: PreviewProvider {
+
+    @StateObject private static var viewModel = WeatherViewModel()
+    
+    static var previews: some View {
+        HistoryView(viewModel: viewModel)
+    }
+}
