@@ -27,8 +27,12 @@ struct ContentView: View {
             Spacer()
             
             Text("\(conditions)")
+            #if os(iOS)
                 .font(.title)
-
+            #else
+                .font(.title3)
+            #endif
+            
             Text("\(String(format: "%.1f", arguments: [temperature])) °C")
                 .font(.largeTitle)
                 .bold()
