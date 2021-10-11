@@ -12,23 +12,27 @@ struct HistoryView: View {
     @ObservedObject var viewModel: WeatherViewModel
 
     var body: some View {
-        // Show the list of questions and responses
-        List(viewModel.history.reversed()) { prediction in
-            VStack(alignment: .leading) {
-                Text("\(prediction.condition.description)")
-                    .font(.title)
+        
+        ZStack {
+            Color.blue
+                .ignoresSafeArea()
+            // Show the list of questions and responses
+            List(viewModel.history.reversed()) { prediction in
+                VStack(alignment: .leading) {
+                    Text("\(prediction.condition.description)")
+                        .font(.title)
 
-                Text("\(String(format: "%.1f", arguments: [prediction.temperature])) °C")
-                    .font(.largeTitle)
-                    .bold()
-                
-                Text("\(prediction.feel)")
-                    .font(.title3)
+                    Text("\(String(format: "%.1f", arguments: [prediction.temperature])) °C")
+                        .font(.largeTitle)
+                        .bold()
+                    
+                    Text("\(prediction.feel)")
+                        .font(.title3)
+                }
             }
+            .padding()
+            .navigationTitle("History")
         }
-        .padding()
-        .navigationTitle("History")
-
     }
 }
 

@@ -16,52 +16,95 @@ struct ContentView: View {
     
     @State var temperature: Double
     
-    @State var feel: String
+    @State var feel: String = ""
 
     @State var conditions: String
+    
+    @State var weatherImage: String = ""
 
     var body: some View {
+        
+        ZStack {
+            Color.blue
+                .ignoresSafeArea()
+            VStack {
+                
+                Spacer()
+                
+                VStack {
+                                    
+                    Image("\(weatherImage)")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                    
+                    Text("\(conditions)")
+                        .foregroundColor(.white)
+                    #if os(iOS)
+                        .font(.title)
+                    #else
+                        .font(.title3)
+                    #endif
+                    
+                    Text("\(String(format: "%.1f", arguments: [temperature])) °C")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(.white)
+                    
+                    Text("\(feel)")
+                        .font(.title3)
+                        .foregroundColor(.white)
+                    
+                }
 
-        VStack {
-            
-            Spacer()
-            
-            Text("\(conditions)")
-            #if os(iOS)
-                .font(.title)
-            #else
-                .font(.title3)
-            #endif
-            
-            Text("\(String(format: "%.1f", arguments: [temperature])) °C")
-                .font(.largeTitle)
-                .bold()
-            
-            Text("\(feel)")
-                .font(.title3)
-            
-            Spacer()
-            
-            Button {
+                Spacer()
                 
-                // Get a new prediction from the view model
-                let prediction = viewModel.providePrediction()
+                Button {
+                    
+                    // Get a new prediction from the view model
+                    let prediction = viewModel.providePrediction()
+                    
+                    // Populate state variables so the user interface updates
+                    temperature = prediction.temperature
+                    feel = "\(prediction.feel)"
+                    conditions = prediction.condition.description
+                    getImage(condition: prediction.condition.description)
+                    
+                    
+                } label: {
+                    Text("Get New Prediction")
+                        .frame(maxWidth: .infinity, maxHeight: 50)
+                        .foregroundColor(.white)
+                        .background(RoundedRectangle( cornerRadius: 20).foregroundColor(.black))
+                    
+                }
+                .padding(.horizontal, 5.0)
                 
-                // Populate state variables so the user interface updates
-                temperature = prediction.temperature
-                feel = "That's \(prediction.feel.lowercased())."
-                conditions = prediction.condition.description
+                Spacer()
+
                 
-            } label: {
-                Text("Get New Prediction")
             }
-            
-            Spacer()
-
-            
         }
         .navigationTitle("Current")
         
+    }
+    func getImage(condition: String) {
+        if condition == "Sunny/Clear" {
+            weatherImage = "sunny"
+        } else if condition == "Partially cloudy" {
+            weatherImage = "cloudy"
+        } else if condition == "Cloudy" {
+            weatherImage = "cloudy"
+        } else if condition == "Overcast" {
+            weatherImage = "cloudy"
+        } else if condition == "Rain" {
+            weatherImage = "rain"
+        } else if condition == "Drizzle" {
+            weatherImage = "rain"
+        } else if condition == "Snow" {
+            weatherImage = "snow"
+        } else {
+            weatherImage = "wind"
+        }
     }
 }
 
